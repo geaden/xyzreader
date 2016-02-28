@@ -26,6 +26,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
@@ -190,35 +191,27 @@ public class ArticleDetailFragment extends Fragment implements
             mRootView.setAlpha(0);
             mRootView.setVisibility(View.VISIBLE);
             mRootView.animate().alpha(1);
-            CollapsingToolbarLayout ctl = (CollapsingToolbarLayout) mRootView.findViewById(
-                    R.id.collapsing_toolbar);
-            mToolbar.setTitle(mCursor.getString(ArticleLoader.Query.TITLE));
-            mToolbar.setSubtitle(
+            final String title = mCursor.getString(ArticleLoader.Query.TITLE);
+            titleView.setText(title);
+            bylineView.setText(Html.fromHtml(
                     DateUtils.getRelativeTimeSpanString(
                             mCursor.getLong(ArticleLoader.Query.PUBLISHED_DATE),
                             System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS,
                             DateUtils.FORMAT_ABBREV_ALL).toString()
                             + " by <font color='#ffffff'>"
                             + mCursor.getString(ArticleLoader.Query.AUTHOR)
-                            + "</font>");
-//            ctl.setTitle(mCursor.getString(ArticleLoader.Query.TITLE));
-            ctl.setExpandedTitleTypeface(Typeface.create("sans-serif-condensed", Typeface.BOLD));
-            ctl.setExpandedTitleMarginBottom(150);
-//            bylineView.setText(Html.fromHtml(
-//                    DateUtils.getRelativeTimeSpanString(
-//                            mCursor.getLong(ArticleLoader.Query.PUBLISHED_DATE),
-//                            System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS,
-//                            DateUtils.FORMAT_ABBREV_ALL).toString()
-//                            + " by <font color='#ffffff'>"
-//                            + mCursor.getString(ArticleLoader.Query.AUTHOR)
-//                            + "</font>"));
+                            + "</font>"));
             mRootView.findViewById(R.id.share_fab).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    startActivity(Intent.createChooser(ShareCompat.IntentBuilder.from(getActivity())
-                            .setType("text/plain")
-                            .setText(mCursor.getString(ArticleLoader.Query.TITLE))
-                            .getIntent(), getString(R.string.action_share)));
+                    Intent shareIntent = Intent.createChooser(ShareCompat.IntentBuilder.from(getActivity())
+                                    .setType("text/plain")
+                                    .setText(mCursor.getString(ArticleLoader.Query.TITLE))
+                                    .getIntent(), getString(R.string.action_share));
+                    if (shareIntent.resolveActivity(
+                            getActivity().getPackageManager()) != null) {
+                        startActivity(shareIntent);
+                    }
                 }
             });
             bodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY)));
@@ -234,18 +227,21 @@ public class ArticleDetailFragment extends Fragment implements
                                         .generate();
                                 mMutedColor = p.getDarkMutedColor(0xFF333333);
                                 mBackDrop.setImageBitmap(bitmap);
-                                // @Gennady Denisov: Creating gradient
-                                int[] colors = {
-                                        mMutedColor,
-                                        ContextCompat.getColor(getActivity(),
-                                        android.R.color.transparent)
-                                };
-                                GradientDrawable gradient = new GradientDrawable(
-                                        GradientDrawable.Orientation.BOTTOM_TOP, colors);
-                                View metaBar = mRootView.findViewById(R.id.meta_bar);
-                                metaBar.setBackground(gradient);
-//                                mPhotoView.setImageBitmap(imageContainer.getBitmap());
-                                updateStatusBar();
+                                // @Gennady Denisov: Creating gradient background for meta bar
+                                try {
+                                    int[] colors = {
+                                            mMutedColor,
+                                            ContextCompat.getColor(getActivity(),
+                                                    android.R.color.transparent)
+                                    };
+                                    GradientDrawable gradient = new GradientDrawable(
+                                            GradientDrawable.Orientation.BOTTOM_TOP, colors);
+                                    View metaBar = mRootView.findViewById(R.id.meta_bar);
+                                    metaBar.setBackground(gradient);
+                                    updateStatusBar();
+                                } catch (Exception e) {
+                                    Log.e(TAG, "Failed to set meta background", e);
+                                }
                             }
                         }
 
@@ -256,8 +252,8 @@ public class ArticleDetailFragment extends Fragment implements
                     });
         } else {
             mRootView.setVisibility(View.GONE);
-//            titleView.setText("N/A");
-//            bylineView.setText("N/A" );
+            titleView.setText("N/A");
+            bylineView.setText("N/A" );
             bodyView.setText("N/A");
         }
     }
@@ -308,6 +304,7 @@ public class ArticleDetailFragment extends Fragment implements
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                Toast.makeText(getActivity(), "Home", Toast.LENGTH_LONG).show();
                 getActivityCast().onBackPressed();
                 return true;
             default:

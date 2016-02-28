@@ -24,7 +24,7 @@ public class DepthPageTransformer implements ViewPager.PageTransformer {
             page.setTranslationX(0);
             page.setScaleX(1);
             page.setScaleY(1);
-        } else if (position >= 1) {  // (0, 1]
+        } else if (position <= 1) {  // (0, 1]
             // Fade the page out
             page.setAlpha(1 - position);
 
@@ -38,7 +38,6 @@ public class DepthPageTransformer implements ViewPager.PageTransformer {
         } else {   // (1, +Infinity]
             // This page is way off-screen to the right
             page.setAlpha(0);
-
         }
     }
 }
