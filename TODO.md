@@ -1,6 +1,6 @@
 # TODO
 
-- [ ] Tablet layout
+- [x] Tablet layout
 - [x] ViewPager fitSystemWindows
 - [x] Detail -> Master shared element transition
 - [x] DepthTransformer fix
