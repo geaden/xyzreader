@@ -1,6 +1,5 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="4dp"
@@ -9,9 +8,7 @@
     android:layout_marginBottom="4dp"
     android:clickable="true"
     android:focusable="true"
-    android:foreground="?selectableItemBackground"
-    app:cardUseCompatPadding="true"
-    tools:showIn="@layout/activity_article_list">
+    android:foreground="?selectableItemBackground">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,11 +18,9 @@
         <!--suppress AndroidLintContentDescription -->
         <com.example.xyzreader.ui.DynamicHeightNetworkImageView
             android:id="@+id/thumbnail"
-            android:layout_width="match_parent"
+            android:layout_width="100dp"
             android:layout_height="100dp"
-            android:scaleType="centerCrop"
-            android:background="@color/photo_placeholder"
-            tools:src="@drawable/p002" />
+            android:background="@color/photo_placeholder" />
 
         <TextView
             android:id="@+id/article_title"
@@ -36,7 +31,7 @@
             android:paddingTop="16dp"
             android:paddingRight="16dp"
             android:paddingBottom="4dp"
-            android:textColor="@android:color/black"
+            android:textColor="@color/ltgray"
             android:ellipsize="end"
             android:maxLines="4" />
 

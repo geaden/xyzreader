@@ -1,4 +1,4 @@
-<resources xmlns:xliff="http://schemas.android.com/tools">
+<resources>
 
     <string name="app_name">XYZ Reader</string>
     <string name="welcome_xyz_reader">Welcome to XYZ Reader!</string>
@@ -8,7 +8,5 @@
     <string name="action_share">Share</string>
 
     <string name="up">Up</string>
-    <string name="backdropTransition">backdrop_transition</string>
-    <string name="subtitle_text"><xliff:g id="date" example="Jun 19, 2013">%1$s</xliff:g> by <xliff:g id="author" example="John Doe">%2$s</xliff:g></string>
 
 </resources>

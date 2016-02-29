@@ -11,8 +11,8 @@ import org.json.JSONTokener;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 
 public class RemoteEndpointUtil {
     private static final String TAG = "RemoteEndpointUtil";
@@ -53,7 +53,7 @@ public class RemoteEndpointUtil {
 
         try {
             OkHttpClient client = new OkHttpClient();
-            HttpURLConnection conn = client.open(url);
+            URLConnection conn = url.openConnection();
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             in = conn.getInputStream();
             byte[] buffer = new byte[1024];

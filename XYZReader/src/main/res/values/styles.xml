@@ -17,28 +17,12 @@
 
 <resources>
 
-    <!-- Primary app theme -->
-    <style name="Theme.Bacon" parent="Base.Theme.Bacon"></style>
+    <style name="Theme.Bacon" parent="@style/Theme.AppCompat.Light.NoActionBar">
 
-    <!-- Theme for detail activity -->
-    <style name="Theme.Bacon.Detail" parent="Theme.Bacon"></style>
-
-    <!-- Declare base, API independent theme of the app -->
-    <style name="Base.Theme.Bacon" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/theme_primary</item>
-        <item name="colorPrimaryDark">@color/theme_primary_dark</item>
-        <item name="colorAccent">@color/theme_accent</item>
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:windowBackground">@color/ltgray</item>
     </style>
 
-    <style name="Widget.CardContent" parent="android:Widget">
-        <item name="android:paddingLeft">16dp</item>
-        <item name="android:paddingRight">16dp</item>
-        <item name="android:paddingTop">24dp</item>
-        <item name="android:paddingBottom">24dp</item>
-        <item name="android:orientation">vertical</item>
+    <style name="Theme.Bacon.Detail">
+        <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
 </resources>
