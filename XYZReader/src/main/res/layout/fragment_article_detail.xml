@@ -88,13 +88,14 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+
         <com.example.xyzreader.ui.MaxWidthLinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:maxWidth="@dimen/detail_card_max_width"
-            android:background="#fff">
+            android:background="#fff"
+            android:maxWidth="@dimen/detail_card_max_width">
 
             <TextView
                 android:id="@+id/article_body"
@@ -110,20 +111,12 @@
                 android:textSize="@dimen/detail_body_text_size"
                 android:lineSpacingMultiplier="@fraction/detail_body_line_spacing_multiplier" />
 
+
+
         </com.example.xyzreader.ui.MaxWidthLinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/share_fab"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_share"
-        android:contentDescription="@string/action_share"
-        android:elevation="@dimen/fab_elevation"
-        app:fabSize="normal"
-        app:layout_anchor="@id/article_content"
-        app:layout_anchorGravity="bottom|right|end"/>
+    <include layout="@layout/share_fab"/>
 
 </android.support.design.widget.CoordinatorLayout>

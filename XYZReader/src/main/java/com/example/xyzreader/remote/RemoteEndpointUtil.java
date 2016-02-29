@@ -53,6 +53,12 @@ public class RemoteEndpointUtil {
 
         try {
             OkHttpClient client = new OkHttpClient();
+            // @Gennady Denisov: Fix for segfault in real device.
+            try {
+                URL.setURLStreamHandlerFactory(client);
+            } catch (final Error e) {
+                Log.e(TAG, "Failed to set stream handler factory", e);
+            }
             HttpURLConnection conn = client.open(url);
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             in = conn.getInputStream();

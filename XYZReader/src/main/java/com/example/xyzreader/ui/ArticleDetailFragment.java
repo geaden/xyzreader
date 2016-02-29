@@ -21,12 +21,10 @@ import android.text.format.DateUtils;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
@@ -49,16 +47,7 @@ public class ArticleDetailFragment extends Fragment implements
     private long mItemId;
     private View mRootView;
     private int mMutedColor = 0xFF333333;
-    private ObservableScrollView mScrollView;
-    private DrawInsetsFrameLayout mDrawInsetsFrameLayout;
     private ColorDrawable mStatusBarColorDrawable;
-
-    private int mTopInset;
-    private View mPhotoContainerView;
-    private ImageView mPhotoView;
-    private int mScrollY;
-    private boolean mIsCard = false;
-    private int mStatusBarFullOpacityBottom;
     private Toolbar mToolbar;
     private ImageView mBackDrop;
 
@@ -84,10 +73,6 @@ public class ArticleDetailFragment extends Fragment implements
         if (getArguments().containsKey(ARG_ITEM_ID)) {
             mItemId = getArguments().getLong(ARG_ITEM_ID);
         }
-
-        mIsCard = getResources().getBoolean(R.bool.detail_is_card);
-        mStatusBarFullOpacityBottom = getResources().getDimensionPixelSize(
-                R.dimen.detail_card_top_margin);
         setHasOptionsMenu(true);
     }
 
@@ -108,7 +93,7 @@ public class ArticleDetailFragment extends Fragment implements
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_article_detail, container, false);
 
         mToolbar = (Toolbar) mRootView.findViewById(R.id.toolbar);
@@ -116,35 +101,12 @@ public class ArticleDetailFragment extends Fragment implements
         getActivityCast().setSupportActionBar(mToolbar);
         getActivityCast().getSupportActionBar().setTitle(null);
         getActivityCast().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//
-//        mDrawInsetsFrameLayout = (DrawInsetsFrameLayout)
-//                mRootView.findViewById(R.id.draw_insets_frame_layout);
-//        mDrawInsetsFrameLayout.setOnInsetsCallback(new DrawInsetsFrameLayout.OnInsetsCallback() {
-//            @Override
-//            public void onInsetsChanged(Rect insets) {
-//                mTopInset = insets.top;
-//            }
-//        });
-
-//        mScrollView = (ObservableScrollView) mRootView.findViewById(R.id.scrollview);
-//        mScrollView.setCallbacks(new ObservableScrollView.Callbacks() {
-//            @Override
-//            public void onScrollChanged() {
-//                mScrollY = mScrollView.getScrollY();
-                // TODO: Get rid of it
-//                getActivityCast().onUpButtonFloorChanged(mItemId, ArticleDetailFragment.this);
-//                mPhotoContainerView.setTranslationY((int) (mScrollY - mScrollY / PARALLAX_FACTOR));
-//                updateStatusBar();
-//            }
-//        });
 
         mBackDrop = (ImageView) mRootView.findViewById(R.id.backdrop);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mBackDrop.setTransitionName(getString(R.string.backdropTransition) + "_"
-                + mItemId);
+                    + mItemId);
         }
-//        mPhotoView = (ImageView) mRootView.findViewById(R.id.photo);
-//        mPhotoContainerView = mRootView.findViewById(R.id.photo_container);
 
         mStatusBarColorDrawable = new ColorDrawable(0);
 
@@ -159,20 +121,6 @@ public class ArticleDetailFragment extends Fragment implements
         CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) mRootView.findViewById(R.id.collapsing_toolbar);
         if (null != appBarLayout) {
             appBarLayout.setContentScrim(mStatusBarColorDrawable);
-        }
-    }
-
-    static float progress(float v, float min, float max) {
-        return constrain((v - min) / (max - min), 0, 1);
-    }
-
-    static float constrain(float val, float min, float max) {
-        if (val < min) {
-            return min;
-        } else if (val > max) {
-            return max;
-        } else {
-            return val;
         }
     }
 
@@ -201,20 +149,22 @@ public class ArticleDetailFragment extends Fragment implements
                             + " by <font color='#ffffff'>"
                             + mCursor.getString(ArticleLoader.Query.AUTHOR)
                             + "</font>"));
+            Log.d(TAG, "Setting bodyView test");
+            bodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY)));
+            Log.d(TAG, "Set!!! " + bodyView.getText());
             mRootView.findViewById(R.id.share_fab).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent shareIntent = Intent.createChooser(ShareCompat.IntentBuilder.from(getActivity())
-                                    .setType("text/plain")
-                                    .setText(mCursor.getString(ArticleLoader.Query.TITLE))
-                                    .getIntent(), getString(R.string.action_share));
+                            .setType("text/plain")
+                            .setText(title)
+                            .getIntent(), getString(R.string.action_share));
                     if (shareIntent.resolveActivity(
                             getActivity().getPackageManager()) != null) {
                         startActivity(shareIntent);
                     }
                 }
             });
-            bodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY)));
             ImageLoaderHelper.getInstance(getActivity()).getImageLoader()
                     .get(mCursor.getString(ArticleLoader.Query.PHOTO_URL), new ImageLoader.ImageListener() {
                         @Override
@@ -253,7 +203,7 @@ public class ArticleDetailFragment extends Fragment implements
         } else {
             mRootView.setVisibility(View.GONE);
             titleView.setText("N/A");
-            bylineView.setText("N/A" );
+            bylineView.setText("N/A");
             bodyView.setText("N/A");
         }
     }
@@ -286,29 +236,5 @@ public class ArticleDetailFragment extends Fragment implements
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
         mCursor = null;
         bindViews();
-    }
-
-    public int getUpButtonFloor() {
-//        if (mPhotoContainerView == null || mPhotoView.getHeight() == 0) {
-//            return Integer.MAX_VALUE;
-//        }
-
-        // account for parallax
-//        return mIsCard
-//                ? (int) mPhotoContainerView.getTranslationY() + mPhotoView.getHeight() - mScrollY
-//                : mPhotoView.getHeight() - mScrollY;
-        return mIsCard ? 0 : 1;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                Toast.makeText(getActivity(), "Home", Toast.LENGTH_LONG).show();
-                getActivityCast().onBackPressed();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
 }
