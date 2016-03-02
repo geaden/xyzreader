@@ -16,6 +16,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/overlay_bg"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:elevation="@dimen/app_bar_elevation"
         android:fitsSystemWindows="true">
 
         <android.support.design.widget.CollapsingToolbarLayout
@@ -42,7 +43,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="@android:color/transparent"
-                android:fitsSystemWindows="true"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                 app:layout_collapseMode="pin"/>
 
@@ -86,16 +86,17 @@
         android:id="@+id/article_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
+        android:layout_gravity="fill_vertical"
+        app:layout_behavior="com.example.xyzreader.ui.FixedScrollingViewBehavior">
 
         <com.example.xyzreader.ui.MaxWidthLinearLayout
-            android:orientation="vertical"
+            android:id="@+id/article_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
             android:background="#fff"
-            android:maxWidth="@dimen/detail_card_max_width">
+            android:orientation="vertical"
+            app:maxWidth="@dimen/detail_card_max_width">
 
             <TextView
                 android:id="@+id/article_body"
@@ -109,14 +110,13 @@
                 android:textColor="#000"
                 android:textColorLink="@color/theme_primary_dark"
                 android:textSize="@dimen/detail_body_text_size"
-                android:lineSpacingMultiplier="@fraction/detail_body_line_spacing_multiplier" />
-
-
+                android:lineSpacingMultiplier="@fraction/detail_body_line_spacing_multiplier"
+                tools:text="Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum" />
 
         </com.example.xyzreader.ui.MaxWidthLinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
 
-    <include layout="@layout/share_fab"/>
+    <include layout="@layout/include_share_fab"/>
 
 </android.support.design.widget.CoordinatorLayout>

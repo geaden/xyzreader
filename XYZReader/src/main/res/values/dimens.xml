@@ -13,4 +13,12 @@
     <dimen name="app_bar_elevation">4dp</dimen>
     <dimen name="cardview_margin">4dp</dimen>
 
+    <dimen name="list_padding_bottom">28dp</dimen>
+    <dimen name="list_toolbar_size">112dp</dimen>
+    <dimen name="list_card_text_padding">16dp</dimen>
+    <dimen name="list_card_text_padding_bottom">4dp</dimen>
+    <dimen name="list_card_thumb_height">100dp</dimen>
+    <dimen name="logo_margin">4dp</dimen>
+    <dimen name="list_top_margin">4dp</dimen>
+
 </resources>

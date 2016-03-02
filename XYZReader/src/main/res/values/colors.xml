@@ -22,4 +22,5 @@
     <color name="theme_primary_dark">#BB3800</color>
     <color name="theme_accent">#03A9F4</color>
     <color name="ltgray">#ffe0e0e0</color>
+    <color name="list_card_text_body">#6000</color>
 </resources>
